@@ -19,7 +19,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             KEY_ID + " INTEGER PRIMARY KEY, " +
             KEY_NAME + " TEXT NOT NULL, " +
             KEY_APELIDO + " TEXT NOT NULL, " +
-            KEY_PRINCIPAL + " TEXT NOT NULL);";
+            KEY_PRINCIPAL + " INTEGER NOT NULL DEFAULT 0);";
 
     SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -6,6 +6,8 @@
     <string name="search_hint">Buscar contato</string>
     <string name="nome_do_contato">Nome do contato</string>
 
+    <string name="contato_adicionado">Contato adicionado a lista de contatos do aplicativo</string>
+
     <string name="URL_BASE">http://www.nobile.pro.br/sdm4/mensageiro/</string>
     <string name="APPLICATION_JSON">application/json</string>
 
@@ -13,4 +15,7 @@
     <string name="ERRO_BUSCAR_CONTATOS">Falha ao buscar contatos do web service</string>
 
     <string name="PARAMETRO_CONTATO_MAIN">PARAMETRO_CONTATO_MAIN</string>
+    <string name="lista_vazia_ws">Nenhum contato encontrado no serviço</string>
+    <string name="lista_vazia_main">Nenhum contato adicionado até o momento</string>
+    <string name="lista_contato_db">LISTA_CONTATOS_DB</string>
 </resources>

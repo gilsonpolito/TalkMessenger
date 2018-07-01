@@ -13,8 +13,8 @@ import sdm.ifspsaocarlos.edu.br.talkmessenger.model.Contato;
 public class ContatoDAO {
     private SQLiteDatabase database;
     private SQLiteHelper dbHelper;
-    public final static String CHAVE_CONTATO_PRINCIPAL = "S";
-    private final static String CHAVE_CONTATOS = "N";
+    public final static Integer CHAVE_CONTATO_PRINCIPAL = 1;
+    public final static Integer CHAVE_CONTATOS = 0;
 
     public ContatoDAO(Context context) {
         this.dbHelper=new SQLiteHelper(context);
@@ -31,9 +31,9 @@ public class ContatoDAO {
 
         String where=SQLiteHelper.KEY_PRINCIPAL + " = ?";
 
-        String[] argWhere=new String[]{CHAVE_CONTATOS};
+        String[] argWhere=new String[]{CHAVE_CONTATOS.toString()};
 
-        cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, null , null,
+        cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
                 null, null, SQLiteHelper.KEY_NAME);
 
         while (cursor.moveToNext())
@@ -42,7 +42,7 @@ public class ContatoDAO {
             contato.setId(cursor.getString(0));
             contato.setNomeCompleto(cursor.getString(1));
             contato.setApelido(cursor.getString(2));
-            contato.setPrincipal(cursor.getString(3));
+            contato.setPrincipal(cursor.getInt(3));
             contatos.add(contato);
         }
         cursor.close();
@@ -64,7 +64,7 @@ public class ContatoDAO {
 
         String where=SQLiteHelper.KEY_PRINCIPAL + " = ?";
 
-        String[] argWhere=new String[]{CHAVE_CONTATO_PRINCIPAL};
+        String[] argWhere=new String[]{CHAVE_CONTATO_PRINCIPAL.toString()};
 
         cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
                 null, null, SQLiteHelper.KEY_NAME);
@@ -76,7 +76,7 @@ public class ContatoDAO {
             contato.setId(cursor.getString(0));
             contato.setNomeCompleto(cursor.getString(1));
             contato.setApelido(cursor.getString(2));
-            contato.setPrincipal(cursor.getString(3));
+            contato.setPrincipal(cursor.getInt(3));
         }
         cursor.close();
 
@@ -109,7 +109,7 @@ public class ContatoDAO {
             contato.setId(cursor.getString(0));
             contato.setNomeCompleto(cursor.getString(1));
             contato.setApelido(cursor.getString(2));
-            contato.setPrincipal(cursor.getString(3));
+            contato.setPrincipal(cursor.getInt(3));
         }
         cursor.close();
 

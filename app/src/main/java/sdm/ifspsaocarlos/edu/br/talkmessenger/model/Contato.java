@@ -3,13 +3,14 @@ package sdm.ifspsaocarlos.edu.br.talkmessenger.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Contato implements Serializable{
     private String id;
     @SerializedName("nome_completo")
     private String nomeCompleto;
     private String apelido;
-    transient private String principal;
+    transient private Integer principal;
 
     public String getId() {
         return id;
@@ -35,11 +36,25 @@ public class Contato implements Serializable{
         this.apelido = apelido;
     }
 
-    public String getPrincipal() {
+    public Integer getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(String principal) {
+    public void setPrincipal(Integer principal) {
         this.principal = principal;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contato)) return false;
+        Contato contato = (Contato) o;
+        return Objects.equals(id, contato.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }
