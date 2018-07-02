@@ -113,7 +113,7 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
     }
 
     private void removerContatosCadastradosBanco() {
-        contatos.removeAll(contatosDB)
+        contatos.removeAll(contatosDB);
         updateUI();
     }
 
@@ -183,7 +183,7 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
                 if (swipeDir == ItemTouchHelper.RIGHT) {
                     Contato contato = contatos.get(viewHolder.getAdapterPosition());
                     contato.setPrincipal(ContatoDAO.CHAVE_CONTATOS);
-                    dao.salvaContato(contato);
+                    dao.salvar(contato);
                     contatosWebService.remove(viewHolder.getAdapterPosition());
                     contatos.remove(viewHolder.getAdapterPosition());
                     recyclerView.getAdapter().notifyDataSetChanged();

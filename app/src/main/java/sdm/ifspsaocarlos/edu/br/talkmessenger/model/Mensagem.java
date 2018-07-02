@@ -2,6 +2,8 @@ package sdm.ifspsaocarlos.edu.br.talkmessenger.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Mensagem {
     private String id;
     @SerializedName("origem_id")
@@ -67,5 +69,19 @@ public class Mensagem {
 
     public void setDestino(Contato destino) {
         this.destino = destino;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Mensagem)) return false;
+        Mensagem mensagem = (Mensagem) o;
+        return Objects.equals(id, mensagem.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }

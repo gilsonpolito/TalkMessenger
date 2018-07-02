@@ -20,21 +20,21 @@ public class ContatoDAO {
         this.dbHelper=new SQLiteHelper(context);
     }
 
-    public List<Contato> buscaTodosContatos()
+    public List<Contato> getAll()
     {
         database=dbHelper.getReadableDatabase();
         List<Contato> contatos = new ArrayList<>();
 
         Cursor cursor;
 
-        String[] cols=new String[] {SQLiteHelper.KEY_ID, SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_APELIDO, SQLiteHelper.KEY_PRINCIPAL};
+        String[] cols=new String[] {SQLiteHelper.KEY_CONTATO_ID, SQLiteHelper.KEY_CONTATO_NAME, SQLiteHelper.KEY_CONTATO_APELIDO, SQLiteHelper.KEY_CONTATO_PRINCIPAL};
 
-        String where=SQLiteHelper.KEY_PRINCIPAL + " = ?";
+        String where=SQLiteHelper.KEY_CONTATO_PRINCIPAL + " = ?";
 
         String[] argWhere=new String[]{CHAVE_CONTATOS.toString()};
 
-        cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
-                null, null, SQLiteHelper.KEY_NAME);
+        cursor = database.query(SQLiteHelper.TABLE_CONTATOS, cols, where , argWhere,
+                null, null, SQLiteHelper.KEY_CONTATO_NAME);
 
         while (cursor.moveToNext())
         {
@@ -52,7 +52,7 @@ public class ContatoDAO {
         return contatos;
     }
 
-    public  Contato buscaContatoPrincipal()
+    public  Contato getPrincipal()
     {
         Contato contato = null;
 
@@ -60,14 +60,14 @@ public class ContatoDAO {
 
         Cursor cursor;
 
-        String[] cols=new String[] {SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_APELIDO, SQLiteHelper.KEY_PRINCIPAL};
+        String[] cols=new String[] {SQLiteHelper.KEY_CONTATO_ID,SQLiteHelper.KEY_CONTATO_NAME, SQLiteHelper.KEY_CONTATO_APELIDO, SQLiteHelper.KEY_CONTATO_PRINCIPAL};
 
-        String where=SQLiteHelper.KEY_PRINCIPAL + " = ?";
+        String where=SQLiteHelper.KEY_CONTATO_PRINCIPAL + " = ?";
 
         String[] argWhere=new String[]{CHAVE_CONTATO_PRINCIPAL.toString()};
 
-        cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
-                null, null, SQLiteHelper.KEY_NAME);
+        cursor = database.query(SQLiteHelper.TABLE_CONTATOS, cols, where , argWhere,
+                null, null, SQLiteHelper.KEY_CONTATO_NAME);
 
 
         if (cursor.moveToNext())
@@ -85,7 +85,7 @@ public class ContatoDAO {
         return contato;
     }
 
-    public Contato localizaContato(String id)
+    public Contato getById(String id)
     {
         Contato contato = null;
 
@@ -93,14 +93,14 @@ public class ContatoDAO {
 
         Cursor cursor;
 
-        String[] cols=new String[] {SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_APELIDO, SQLiteHelper.KEY_PRINCIPAL};
+        String[] cols=new String[] {SQLiteHelper.KEY_CONTATO_ID,SQLiteHelper.KEY_CONTATO_NAME, SQLiteHelper.KEY_CONTATO_APELIDO, SQLiteHelper.KEY_CONTATO_PRINCIPAL};
 
-        String where=SQLiteHelper.KEY_ID + " = ?";
+        String where=SQLiteHelper.KEY_CONTATO_ID + " = ?";
 
         String[] argWhere=new String[]{id};
 
-        cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
-                null, null, SQLiteHelper.KEY_NAME);
+        cursor = database.query(SQLiteHelper.TABLE_CONTATOS, cols, where , argWhere,
+                null, null, SQLiteHelper.KEY_CONTATO_NAME);
 
 
         if (cursor.moveToNext())
@@ -118,25 +118,25 @@ public class ContatoDAO {
         return contato;
     }
 
-    public void salvaContato(Contato contato) {
+    public void salvar(Contato contato) {
 
-        Contato contatoJaExistente = localizaContato(contato.getId());
+        Contato contatoJaExistente = getById(contato.getId());
 
         database=dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(SQLiteHelper.KEY_ID, Integer.parseInt(contato.getId()));
-        values.put(SQLiteHelper.KEY_NAME, contato.getNomeCompleto());
-        values.put(SQLiteHelper.KEY_APELIDO, contato.getApelido());
-        values.put(SQLiteHelper.KEY_PRINCIPAL, contato.getPrincipal());
+        values.put(SQLiteHelper.KEY_CONTATO_ID, Integer.parseInt(contato.getId()));
+        values.put(SQLiteHelper.KEY_CONTATO_NAME, contato.getNomeCompleto());
+        values.put(SQLiteHelper.KEY_CONTATO_APELIDO, contato.getApelido());
+        values.put(SQLiteHelper.KEY_CONTATO_PRINCIPAL, contato.getPrincipal());
 
         if (contatoJaExistente != null) {
             String[] argWhere = new String[]{contato.getId()};
-            database.update(SQLiteHelper.DATABASE_TABLE, values, SQLiteHelper.KEY_ID + " = ?", argWhere);
+            database.update(SQLiteHelper.TABLE_CONTATOS, values, SQLiteHelper.KEY_CONTATO_ID + " = ?", argWhere);
         }
         else
-            database.insert(SQLiteHelper.DATABASE_TABLE, null, values);
+            database.insert(SQLiteHelper.TABLE_CONTATOS, null, values);
 
         database.close();
     }
@@ -144,7 +144,7 @@ public class ContatoDAO {
     /*public void apagaContato(Contato c)
     {
         database=dbHelper.getWritableDatabase();
-        database.delete(SQLiteHelper.DATABASE_TABLE, SQLiteHelper.KEY_ID + "="
+        database.delete(SQLiteHelper.TABLE_CONTATOS, SQLiteHelper.KEY_CONTATO_ID + "="
                 + c.getId(), null);
         database.close();
     }*/

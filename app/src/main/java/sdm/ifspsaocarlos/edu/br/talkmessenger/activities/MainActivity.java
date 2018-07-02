@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void atualizarListaDeContatos() {
         contatos.clear();
-        contatos.addAll(dao.buscaTodosContatos());
+        contatos.addAll(dao.getAll());
         updateUI();
     }
 
@@ -87,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
         adapter.setClickListener(new ContatoAdapter.ItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                final Contato contatoSelecionado = contatos.get(position);
+                Intent intent = new Intent(getApplicationContext(), ListaMensagensActivity.class);
+                intent.putExtra(getString(R.string.CONTATO_SELECIONADO), contatoSelecionado);
+                intent.putExtra(getString(R.string.CONTATO_PRINCIPAL), contatoPrincipal);
+                startActivity(intent);
             }
         });
     }

@@ -52,7 +52,7 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
         public ContatoViewHolder(View itemView) {
             super(itemView);
             nome = itemView.findViewById(R.id.tvNome);
-            itemView.setOnClickListener(this);
+            nome.setOnClickListener(this);
         }
 
         @Override

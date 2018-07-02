@@ -36,7 +36,7 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final ContatoDAO dao = new ContatoDAO(this);
-        Contato contatoPrincipal = dao.buscaContatoPrincipal();
+        Contato contatoPrincipal = dao.getPrincipal();
 
         if(contatoPrincipal != null){
             irParaTelaPrincipal(contatoPrincipal);
@@ -83,9 +83,9 @@ public class CadastroActivity extends AppCompatActivity {
                             super.onPostExecute(contato);
 
                             contato.setPrincipal(ContatoDAO.CHAVE_CONTATO_PRINCIPAL);
-                            dao.salvaContato(contato);
+                            dao.salvar(contato);
 
-                            Toast.makeText(CadastroActivity.this, "Contato cadastrado: " + contato.getId(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CadastroActivity.this, getString(R.string.contato_cadastrado) + contato.getId(), Toast.LENGTH_SHORT).show();
 
                             irParaTelaPrincipal(contato);
                         }

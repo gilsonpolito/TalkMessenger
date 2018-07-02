@@ -13,9 +13,16 @@
 
     <string name="ERRO_CADASTRO_CONTATO">Falha ao realizar o cadastro do contato</string>
     <string name="ERRO_BUSCAR_CONTATOS">Falha ao buscar contatos do web service</string>
+    <string name="ERRO_ENVIAR_MENSAGEM">Falha ao enviar mensagem ao web service</string>
 
     <string name="PARAMETRO_CONTATO_MAIN">PARAMETRO_CONTATO_MAIN</string>
     <string name="lista_vazia_ws">Nenhum contato encontrado no serviço</string>
     <string name="lista_vazia_main">Nenhum contato adicionado até o momento</string>
     <string name="lista_contato_db">LISTA_CONTATOS_DB</string>
+
+    <string name="CONTATO_SELECIONADO">CONTATO_SELECIONADO</string>
+    <string name="CONTATO_PRINCIPAL">CONTATO_PRINCIPAL</string>
+    <string name="enviar">Enviar</string>
+    <string name="contato_cadastrado">Contato cadastrado:</string>
+    <string name="mensagem_cadastrada">Mensagem cadastrada:</string>
 </resources>
