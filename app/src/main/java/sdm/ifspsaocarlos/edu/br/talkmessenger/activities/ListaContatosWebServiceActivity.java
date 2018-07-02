@@ -95,12 +95,6 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
                     public void onResponse(Call<List<Contato>> call, Response<List<Contato>> response) {
                         contatosWebService = response.body();
                         contatos.addAll(contatosWebService);
-                        Collections.sort(contatos, new Comparator<Contato>() {
-                            @Override
-                            public int compare(Contato contato, Contato contatoComparado) {
-                                return contato.getNomeCompleto().compareTo(contatoComparado.getNomeCompleto());
-                            }
-                        });
                         removerContatosCadastradosBanco();
                     }
 
@@ -114,6 +108,12 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
 
     private void removerContatosCadastradosBanco() {
         contatos.removeAll(contatosDB);
+        Collections.sort(contatos, new Comparator<Contato>() {
+            @Override
+            public int compare(Contato contato, Contato contatoComparado) {
+                return contato.getNomeCompleto().compareTo(contatoComparado.getNomeCompleto());
+            }
+        });
         updateUI();
     }
 
