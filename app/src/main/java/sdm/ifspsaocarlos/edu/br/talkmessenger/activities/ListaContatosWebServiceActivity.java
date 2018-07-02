@@ -184,7 +184,7 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
                     Contato contato = contatos.get(viewHolder.getAdapterPosition());
                     contato.setPrincipal(ContatoDAO.CHAVE_CONTATOS);
                     dao.salvar(contato);
-                    contatosWebService.remove(viewHolder.getAdapterPosition());
+                    contatosDB.add(contato);
                     contatos.remove(viewHolder.getAdapterPosition());
                     recyclerView.getAdapter().notifyDataSetChanged();
                     showSnackBar(getResources().getString(R.string.contato_adicionado));
