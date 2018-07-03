@@ -9,8 +9,9 @@
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
+        android:layout_margin="7dp"
         app:cardCornerRadius="3dp"
         app:cardElevation="5dp"
         app:contentPadding="1dp">
@@ -18,8 +19,10 @@
         <TextView
             android:id="@+id/tvNome"
             android:layout_width="match_parent"
+            android:background="@drawable/degrade"
             android:layout_height="50dp"
             android:gravity="center_vertical"
+            android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
     </android.support.v7.widget.CardView>

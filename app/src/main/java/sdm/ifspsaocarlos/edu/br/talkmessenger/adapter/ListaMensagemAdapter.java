@@ -3,7 +3,6 @@ package sdm.ifspsaocarlos.edu.br.talkmessenger.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,26 +35,24 @@ public class ListaMensagemAdapter extends ArrayAdapter<Mensagem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         LerOrigemDestinoHolder holder = null;
+        Mensagem msg = mensagems.get(position);
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+
+            if (msg.getOrigemId().equals(id)) {
+                row = inflater.inflate(R.layout.balloon_right, parent, false);
+            } else {
+                row = inflater.inflate(R.layout.balloon_left, parent, false);
+            }
+
 
             holder = new LerOrigemDestinoHolder();
-            holder.mensagemTV = (TextView) row.findViewById(R.id.tv_mensagem);
+            holder.mensagemTV = (TextView) row.findViewById(R.id.mensagem);
 
             row.setTag(holder);
         } else {
             holder = (LerOrigemDestinoHolder) row.getTag();
-        }
-
-        Mensagem msg = mensagems.get(position);
-        if (msg.getOrigemId().equals(id)) {
-            holder.mensagemTV.setGravity(Gravity.LEFT);
-            holder.mensagemTV.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        } else {
-            holder.mensagemTV.setGravity(Gravity.RIGHT);
-            holder.mensagemTV.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         }
         holder.mensagemTV.setText(msg.getCorpo());
 

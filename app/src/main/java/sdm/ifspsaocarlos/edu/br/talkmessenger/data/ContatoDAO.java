@@ -141,11 +141,15 @@ public class ContatoDAO {
         database.close();
     }
 
-    /*public void apagaContato(Contato c)
+    public void delete(Contato c)
     {
         database=dbHelper.getWritableDatabase();
+
+        MensagemDAO dao = new MensagemDAO();
+        dao.deletar(database, c.getId());
+
         database.delete(SQLiteHelper.TABLE_CONTATOS, SQLiteHelper.KEY_CONTATO_ID + "="
                 + c.getId(), null);
         database.close();
-    }*/
+    }
 }

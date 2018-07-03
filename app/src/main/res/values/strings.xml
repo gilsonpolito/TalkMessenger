@@ -8,6 +8,8 @@
 
     <string name="contato_adicionado">Contato adicionado a lista de contatos do aplicativo</string>
 
+    <string name="contato_removido">Contato removido do aplicativo</string>
+
     <string name="URL_BASE">http://www.nobile.pro.br/sdm4/mensageiro/</string>
     <string name="APPLICATION_JSON">application/json</string>
 
@@ -25,4 +27,6 @@
     <string name="enviar">Enviar</string>
     <string name="contato_cadastrado">Contato cadastrado:</string>
     <string name="mensagem_cadastrada">Mensagem cadastrada:</string>
+    <string name="lista_contatos">Lista de contatos</string>
+    <string name="lista_contatos_ws">Lista contatos WS</string>
 </resources>

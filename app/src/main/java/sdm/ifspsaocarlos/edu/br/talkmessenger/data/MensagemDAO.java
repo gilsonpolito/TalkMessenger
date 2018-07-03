@@ -18,6 +18,8 @@ public class MensagemDAO {
         this.dbHelper=new SQLiteHelper(context);
     }
 
+    MensagemDAO(){}
+
     public List<Mensagem> buscaTodasMensagens(String origemId, String destinoId)
     {
         database=dbHelper.getReadableDatabase();
@@ -86,11 +88,14 @@ public class MensagemDAO {
         }
     }
 
-    /*public void deletar(){
-        database=dbHelper.getWritableDatabase();
-        database.delete(SQLiteHelper.TABLE_MENSAGENS, "id > 0", null);
-        database.close();
-    }*/
+    void deletar(SQLiteDatabase database, String idContato){
+
+        String where=SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID + " = ? OR " + SQLiteHelper.KEY_MENSAGEM_DESTINO_ID + " = ?";
+
+        String[] argWhere=new String[]{idContato, idContato};
+
+        database.delete(SQLiteHelper.TABLE_MENSAGENS, where, argWhere);
+    }
 
     private void saveOrUpdate(Mensagem mensagem, Boolean salvar){
         database=dbHelper.getWritableDatabase();

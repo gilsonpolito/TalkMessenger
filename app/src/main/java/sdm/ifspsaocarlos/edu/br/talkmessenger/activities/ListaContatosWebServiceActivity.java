@@ -3,10 +3,15 @@ package sdm.ifspsaocarlos.edu.br.talkmessenger.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -37,6 +42,7 @@ import sdm.ifspsaocarlos.edu.br.talkmessenger.adapter.ContatoWebServiceAdapter;
 import sdm.ifspsaocarlos.edu.br.talkmessenger.api.ContatoAPI;
 import sdm.ifspsaocarlos.edu.br.talkmessenger.data.ContatoDAO;
 import sdm.ifspsaocarlos.edu.br.talkmessenger.model.Contato;
+import sdm.ifspsaocarlos.edu.br.talkmessenger.util.Utilitaria;
 
 public class ListaContatosWebServiceActivity extends AppCompatActivity {
 
@@ -64,7 +70,7 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_contatos_web_service);
 
         Intent intent = getIntent();
-        contatosDB = (ArrayList<Contato>)intent.getSerializableExtra(getString(R.string.lista_contato_db));
+        contatosDB = (ArrayList<Contato>) intent.getSerializableExtra(getString(R.string.lista_contato_db));
 
         empty = findViewById(R.id.empty_view_ws);
 
@@ -145,7 +151,7 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
         return true;
     }
 
-    private void updateUI(){
+    private void updateUI() {
         recyclerView.getAdapter().notifyDataSetChanged();
         if (recyclerView.getAdapter().getItemCount() == 0)
             empty.setVisibility(View.VISIBLE);
@@ -153,7 +159,7 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
             empty.setVisibility(View.GONE);
     }
 
-    private void updateUI(String query){
+    private void updateUI(String query) {
         List<Contato> filtro = new ArrayList<>();
         for (Contato contato : contatos) {
             if (contato.getNomeCompleto().startsWith(query)) {
@@ -190,6 +196,26 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
                     showSnackBar(getResources().getString(R.string.contato_adicionado));
                     updateUI();
                 }
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                Bitmap icon;
+                Paint p = new Paint();
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if (dX > 0) {
+                        p.setColor(ContextCompat.getColor(getBaseContext(), R.color.colorInserir));
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_account_plus);
+
+                        c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom(), p);
+                        c.drawBitmap(icon, (float) itemView.getLeft() + Utilitaria.convertDpToPx(ListaContatosWebServiceActivity.this, 16), (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - icon.getHeight()) / 2, p);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);

@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/app_name"
+            android:label="@string/lista_contatos"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".activities.ListaContatosWebServiceActivity"
-            android:label="@string/app_name"
+            android:label="@string/lista_contatos_ws"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
