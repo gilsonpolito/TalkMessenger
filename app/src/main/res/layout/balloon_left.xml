@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_chat"
         android:textStyle="bold"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@+id/operador" />
 
 </android.support.constraint.ConstraintLayout>

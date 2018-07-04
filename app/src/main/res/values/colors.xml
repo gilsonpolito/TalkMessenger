@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorInserir">#37a440</color>
     <color name="colorDeletar">#d70a1b</color>
+    <color name="colorLeft">#99c8fa</color>
+    <color name="colorRight">#a4f1bb</color>
 </resources>

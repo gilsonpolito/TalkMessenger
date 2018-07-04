@@ -21,7 +21,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     static final String KEY_MENSAGEM_DESTINO_ID = "id_destino";
     static final String KEY_MENSAGEM_CORPO_MENSAGEM = "corpo_mensagem";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     private static final String CREATE_TABLE_CONTATOS = "CREATE TABLE " + TABLE_CONTATOS + " (" +
             KEY_CONTATO_ID + " INTEGER PRIMARY KEY, " +
             KEY_CONTATO_NAME + " TEXT NOT NULL, " +
@@ -48,9 +48,5 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        switch (oldVersion) {
-            case 1:
-                database.execSQL(CREATE_TABLE_MENSAGENS);
-        }
     }
 }

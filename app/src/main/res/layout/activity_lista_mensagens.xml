@@ -10,7 +10,12 @@
         android:id="@+id/lv_mostrar_mensagens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        android:divider="@null"
+        android:dividerHeight="4dp"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"
+        android:paddingTop="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

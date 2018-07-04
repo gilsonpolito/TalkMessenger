@@ -29,4 +29,8 @@
     <string name="mensagem_cadastrada">Mensagem cadastrada:</string>
     <string name="lista_contatos">Lista de contatos</string>
     <string name="lista_contatos_ws">Lista contatos WS</string>
+    
+    <string name="PERIODO_ATUALIZACAO_MENSAGENS">10000</string>
+
+    <string name="MSG_USUARIO_CONECTADO">Você esta conectado com o usuário: </string>
 </resources>

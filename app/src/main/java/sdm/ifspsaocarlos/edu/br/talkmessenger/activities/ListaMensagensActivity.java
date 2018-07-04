@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -38,14 +40,16 @@ public class ListaMensagensActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private List<Mensagem> listaMensagens = new ArrayList<>();
-    private boolean primeiraChamada = false;
-    private boolean segundaChamada = false;
     private ListView mostrarMensagensLv;
     private ListaMensagemAdapter adapter;
     private EditText etMensagem;
     private Gson gson;
     private MensagemAPI api;
     private MensagemDAO dao;
+    private Contato contatoPrincipal;
+
+    private String maxIdMensagemOrigem;
+    private String maxIdMensagemDestino;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +58,16 @@ public class ListaMensagensActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Contato contatoSelecionado = (Contato) intent.getSerializableExtra(getString(R.string.CONTATO_SELECIONADO));
-        final Contato contatoPrincipal = (Contato) intent.getSerializableExtra(getString(R.string.CONTATO_PRINCIPAL));
+        contatoPrincipal = (Contato) intent.getSerializableExtra(getString(R.string.CONTATO_PRINCIPAL));
 
         dao = new MensagemDAO(this);
-        //dao.deletar();
+
         List<Mensagem> mensagensOrigem = dao.buscaTodasMensagens(contatoPrincipal.getId(), contatoSelecionado.getId());
-        String maxIdMensagemOrigem = getMaxId(mensagensOrigem);
+        maxIdMensagemOrigem = getMaxId(mensagensOrigem);
         listaMensagens.addAll(mensagensOrigem);
 
         List<Mensagem> mensagensDestino = dao.buscaTodasMensagens(contatoSelecionado.getId(), contatoPrincipal.getId());
-        String maxIdMensagemDestino = getMaxId(mensagensDestino);
+        maxIdMensagemDestino = getMaxId(mensagensDestino);
         listaMensagens.addAll(mensagensDestino);
 
         gson = new GsonBuilder().setLenient().create();
@@ -73,17 +77,15 @@ public class ListaMensagensActivity extends AppCompatActivity {
 
         retrofit = builder.build();
         api = retrofit.create(MensagemAPI.class);
+
         api.getMensagens(maxIdMensagemOrigem, contatoPrincipal.getId(), contatoSelecionado.getId())
                 .enqueue(new Callback<List<Mensagem>>() {
                     @Override
                     public void onResponse(Call<List<Mensagem>> call, Response<List<Mensagem>> response) {
                         List<Mensagem> msg = response.body();
+                        maxIdMensagemOrigem = getMaxId(msg);
                         dao.salvar(msg);
                         listaMensagens.addAll(msg);
-                        primeiraChamada = true;
-                        if (chamarIntent()) {
-                            updateUI();
-                        }
                     }
 
                     @Override
@@ -92,24 +94,35 @@ public class ListaMensagensActivity extends AppCompatActivity {
                     }
                 });
 
-        api.getMensagens(maxIdMensagemDestino, contatoSelecionado.getId(), contatoPrincipal.getId())
-                .enqueue(new Callback<List<Mensagem>>() {
-                    @Override
-                    public void onResponse(Call<List<Mensagem>> call, Response<List<Mensagem>> response) {
-                        List<Mensagem> msg = response.body();
-                        dao.salvar(msg);
-                        listaMensagens.addAll(msg);
-                        segundaChamada = true;
-                        if (chamarIntent()) {
-                            updateUI();
-                        }
-                    }
+        Timer timerObj = new Timer();
+        TimerTask timerTaskObj = new TimerTask() {
+            public void run() {
+                api.getMensagens(maxIdMensagemDestino, contatoSelecionado.getId(), contatoPrincipal.getId())
+                        .enqueue(new Callback<List<Mensagem>>() {
+                            @Override
+                            public void onResponse(Call<List<Mensagem>> call, Response<List<Mensagem>> response) {
+                                List<Mensagem> msg = response.body();
 
-                    @Override
-                    public void onFailure(Call<List<Mensagem>> call, Throwable t) {
-                        Toast.makeText(ListaMensagensActivity.this, "Erro na recuperação das mensagens!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                String max = getMaxId(msg);
+
+                                if (Long.parseLong(max) > Long.parseLong(maxIdMensagemDestino)) {
+                                    maxIdMensagemDestino = max;
+                                }
+
+                                dao.salvar(msg);
+
+                                listaMensagens.addAll(msg);
+                                updateUI();
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Mensagem>> call, Throwable t) {
+                                Toast.makeText(ListaMensagensActivity.this, "Erro na recuperação das mensagens!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        };
+        timerObj.schedule(timerTaskObj, 0, Long.parseLong(getString(R.string.PERIODO_ATUALIZACAO_MENSAGENS)));
 
         etMensagem = findViewById(R.id.etMensagem);
         Button btEnviarMensagem = findViewById(R.id.btEnviarMensagem);
@@ -146,7 +159,7 @@ public class ListaMensagensActivity extends AppCompatActivity {
                         super.onPostExecute(mensagem);
                         dao.salvar(mensagem);
                         listaMensagens.add(mensagem);
-                        Toast.makeText(ListaMensagensActivity.this, getString(R.string.mensagem_cadastrada) + mensagem.getId(), Toast.LENGTH_SHORT).show();
+                        etMensagem.setText("");
                         updateUI();
                     }
                 };
@@ -167,22 +180,19 @@ public class ListaMensagensActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        if(adapter==null){
-            adapter = new ListaMensagemAdapter(this, R.layout.mensagem_celula, listaMensagens);
-            mostrarMensagensLv = findViewById(R.id.lv_mostrar_mensagens);
-            mostrarMensagensLv.setAdapter(adapter);
-        }
         Collections.sort(listaMensagens, new Comparator<Mensagem>() {
             @Override
             public int compare(Mensagem m1, Mensagem m2) {
                 return m1.getId().compareTo(m2.getId());
             }
         });
-        adapter.notifyDataSetChanged();
-        etMensagem.setText("");
-    }
 
-    private synchronized boolean chamarIntent() {
-        return primeiraChamada && segundaChamada;
+        if (adapter == null) {
+            adapter = new ListaMensagemAdapter(this, R.layout.balloon_left, listaMensagens, contatoPrincipal.getId());
+            mostrarMensagensLv = findViewById(R.id.lv_mostrar_mensagens);
+            mostrarMensagensLv.setAdapter(adapter);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 }

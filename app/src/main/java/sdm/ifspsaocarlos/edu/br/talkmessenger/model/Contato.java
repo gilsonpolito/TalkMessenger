@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Contato implements Serializable{
+public class Contato implements Serializable {
     private String id;
     @SerializedName("nome_completo")
     private String nomeCompleto;

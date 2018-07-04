@@ -15,29 +15,28 @@ public class MensagemDAO {
     private SQLiteHelper dbHelper;
 
     public MensagemDAO(Context context) {
-        this.dbHelper=new SQLiteHelper(context);
+        this.dbHelper = new SQLiteHelper(context);
     }
 
-    MensagemDAO(){}
+    MensagemDAO() {
+    }
 
-    public List<Mensagem> buscaTodasMensagens(String origemId, String destinoId)
-    {
-        database=dbHelper.getReadableDatabase();
+    public List<Mensagem> buscaTodasMensagens(String origemId, String destinoId) {
+        database = dbHelper.getReadableDatabase();
         List<Mensagem> mensagens = new ArrayList<>();
 
         Cursor cursor;
 
-        String[] cols=new String[] {SQLiteHelper.KEY_MENSAGEM_ID, SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID, SQLiteHelper.KEY_MENSAGEM_DESTINO_ID, SQLiteHelper.KEY_MENSAGEM_CORPO_MENSAGEM};
+        String[] cols = new String[]{SQLiteHelper.KEY_MENSAGEM_ID, SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID, SQLiteHelper.KEY_MENSAGEM_DESTINO_ID, SQLiteHelper.KEY_MENSAGEM_CORPO_MENSAGEM};
 
-        String where=SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID + " = ? AND " + SQLiteHelper.KEY_MENSAGEM_DESTINO_ID + " = ?";
+        String where = SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID + " = ? AND " + SQLiteHelper.KEY_MENSAGEM_DESTINO_ID + " = ?";
 
-        String[] argWhere=new String[]{origemId, destinoId};
+        String[] argWhere = new String[]{origemId, destinoId};
 
-        cursor = database.query(SQLiteHelper.TABLE_MENSAGENS, cols, where , argWhere,
+        cursor = database.query(SQLiteHelper.TABLE_MENSAGENS, cols, where, argWhere,
                 null, null, SQLiteHelper.KEY_MENSAGEM_ID);
 
-        while (cursor.moveToNext())
-        {
+        while (cursor.moveToNext()) {
             Mensagem mensagem = new Mensagem();
             mensagem.setId(cursor.getString(0));
             mensagem.setOrigemId(cursor.getString(1));
@@ -56,23 +55,22 @@ public class MensagemDAO {
         saveOrUpdate(mensagem, true);
     }
 
-    private boolean existeMensagem(Mensagem mensagem){
+    private boolean existeMensagem(Mensagem mensagem) {
         Boolean retorno = false;
-        database=dbHelper.getReadableDatabase();
+        database = dbHelper.getReadableDatabase();
 
         Cursor cursor;
 
-        String[] cols=new String[] {SQLiteHelper.KEY_MENSAGEM_ID, SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID, SQLiteHelper.KEY_MENSAGEM_DESTINO_ID, SQLiteHelper.KEY_MENSAGEM_CORPO_MENSAGEM};
+        String[] cols = new String[]{SQLiteHelper.KEY_MENSAGEM_ID, SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID, SQLiteHelper.KEY_MENSAGEM_DESTINO_ID, SQLiteHelper.KEY_MENSAGEM_CORPO_MENSAGEM};
 
-        String where=SQLiteHelper.KEY_MENSAGEM_ID + " = ?";
+        String where = SQLiteHelper.KEY_MENSAGEM_ID + " = ?";
 
-        String[] argWhere=new String[]{mensagem.getId()};
+        String[] argWhere = new String[]{mensagem.getId()};
 
-        cursor = database.query(SQLiteHelper.TABLE_MENSAGENS, cols, where , argWhere,
+        cursor = database.query(SQLiteHelper.TABLE_MENSAGENS, cols, where, argWhere,
                 null, null, null);
 
-        if (cursor.moveToNext())
-        {
+        if (cursor.moveToNext()) {
             retorno = true;
         }
         cursor.close();
@@ -82,23 +80,23 @@ public class MensagemDAO {
         return retorno;
     }
 
-    public void salvar(List<Mensagem> mensagens){
-        for(Mensagem mensagem: mensagens){
+    public void salvar(List<Mensagem> mensagens) {
+        for (Mensagem mensagem : mensagens) {
             saveOrUpdate(mensagem, !existeMensagem(mensagem));
         }
     }
 
-    void deletar(SQLiteDatabase database, String idContato){
+    void deletar(SQLiteDatabase database, String idContato) {
 
-        String where=SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID + " = ? OR " + SQLiteHelper.KEY_MENSAGEM_DESTINO_ID + " = ?";
+        String where = SQLiteHelper.KEY_MENSAGEM_ORIGEM_ID + " = ? OR " + SQLiteHelper.KEY_MENSAGEM_DESTINO_ID + " = ?";
 
-        String[] argWhere=new String[]{idContato, idContato};
+        String[] argWhere = new String[]{idContato, idContato};
 
         database.delete(SQLiteHelper.TABLE_MENSAGENS, where, argWhere);
     }
 
-    private void saveOrUpdate(Mensagem mensagem, Boolean salvar){
-        database=dbHelper.getWritableDatabase();
+    private void saveOrUpdate(Mensagem mensagem, Boolean salvar) {
+        database = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -107,11 +105,10 @@ public class MensagemDAO {
         values.put(SQLiteHelper.KEY_MENSAGEM_DESTINO_ID, Integer.parseInt(mensagem.getDestinoId()));
         values.put(SQLiteHelper.KEY_MENSAGEM_CORPO_MENSAGEM, mensagem.getCorpo());
 
-        if(salvar) {
+        if (salvar) {
             database.insert(SQLiteHelper.TABLE_MENSAGENS, null, values);
-        }
-        else {
-            String where=SQLiteHelper.KEY_MENSAGEM_ID + " = ?";
+        } else {
+            String where = SQLiteHelper.KEY_MENSAGEM_ID + " = ?";
             String[] whereArgs = new String[]{mensagem.getId()};
             database.update(SQLiteHelper.TABLE_MENSAGENS, values, where, whereArgs);
         }

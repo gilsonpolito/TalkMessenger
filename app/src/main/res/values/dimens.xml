@@ -26,7 +26,7 @@
     <dimen name="margenBalaoBottom">10dp</dimen>
     <dimen name="size_bt_enviar">56dp</dimen>
 
-    <dimen name="text_size_chat">16sp</dimen>
+    <dimen name="text_size_chat">24sp</dimen>
     <dimen name="padding_box_sistemas">20dp</dimen>
 
     <dimen name="margenRightChat">30dp</dimen>

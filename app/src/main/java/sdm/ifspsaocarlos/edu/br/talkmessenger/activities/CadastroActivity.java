@@ -2,8 +2,8 @@ package sdm.ifspsaocarlos.edu.br.talkmessenger.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,7 +38,7 @@ public class CadastroActivity extends AppCompatActivity {
         final ContatoDAO dao = new ContatoDAO(this);
         Contato contatoPrincipal = dao.getPrincipal();
 
-        if(contatoPrincipal != null){
+        if (contatoPrincipal != null) {
             irParaTelaPrincipal(contatoPrincipal);
         } else {
 

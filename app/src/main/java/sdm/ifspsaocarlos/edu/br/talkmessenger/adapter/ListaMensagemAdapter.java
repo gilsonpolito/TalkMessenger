@@ -16,36 +16,31 @@ import sdm.ifspsaocarlos.edu.br.talkmessenger.model.Mensagem;
 
 public class ListaMensagemAdapter extends ArrayAdapter<Mensagem> {
 
-    private final int layoutResourceId;
     private final Context context;
-    private final List<Mensagem> mensagems;
-    private String id;
+    private final List<Mensagem> mensagens;
+    private String idUsuarioPrincipal;
 
-    public ListaMensagemAdapter(@NonNull Context context, int resource, @NonNull List<Mensagem> mensagens) {
+    public ListaMensagemAdapter(@NonNull Context context, int resource, @NonNull List<Mensagem> mensagens, String idUsuarioPrincipal) {
         super(context, resource, mensagens);
-        this.layoutResourceId = resource;
         this.context = context;
-        this.mensagems = mensagens;
-        if (this.mensagems.size() > 0) {
-            id = mensagems.get(0).getOrigemId();
-        }
+        this.mensagens = mensagens;
+        this.idUsuarioPrincipal = idUsuarioPrincipal;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         LerOrigemDestinoHolder holder = null;
-        Mensagem msg = mensagems.get(position);
+        Mensagem msg = mensagens.get(position);
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 
-            if (msg.getOrigemId().equals(id)) {
+            if (msg.getOrigemId().equals(idUsuarioPrincipal)) {
                 row = inflater.inflate(R.layout.balloon_right, parent, false);
             } else {
                 row = inflater.inflate(R.layout.balloon_left, parent, false);
             }
-
 
             holder = new LerOrigemDestinoHolder();
             holder.mensagemTV = (TextView) row.findViewById(R.id.mensagem);
@@ -54,6 +49,7 @@ public class ListaMensagemAdapter extends ArrayAdapter<Mensagem> {
         } else {
             holder = (LerOrigemDestinoHolder) row.getTag();
         }
+
         holder.mensagemTV.setText(msg.getCorpo());
 
         return row;
@@ -62,5 +58,4 @@ public class ListaMensagemAdapter extends ArrayAdapter<Mensagem> {
     static class LerOrigemDestinoHolder {
         TextView mensagemTV;
     }
-
 }

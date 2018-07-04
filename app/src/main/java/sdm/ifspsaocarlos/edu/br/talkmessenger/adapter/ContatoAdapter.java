@@ -57,8 +57,8 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
 
         @Override
         public void onClick(View view) {
-            if(view.getId() == R.id.tvNome){
-                if(clickListener != null)
+            if (view.getId() == R.id.tvNome) {
+                if (clickListener != null)
                     clickListener.onItemClick(getAdapterPosition());
             }
         }

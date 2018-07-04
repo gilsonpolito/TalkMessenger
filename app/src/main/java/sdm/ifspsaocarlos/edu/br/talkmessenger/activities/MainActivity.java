@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, contatoPrincipal.getNomeCompleto(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.MSG_USUARIO_CONECTADO) + contatoPrincipal.getNomeCompleto(), Toast.LENGTH_LONG).show();
 
         dao = new ContatoDAO(this);
         atualizarListaDeContatos();

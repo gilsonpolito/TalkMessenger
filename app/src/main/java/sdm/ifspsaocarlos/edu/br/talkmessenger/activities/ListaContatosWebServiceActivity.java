@@ -242,5 +242,4 @@ public class ListaContatosWebServiceActivity extends AppCompatActivity {
         setIntent(intent);
         handleIntent(intent);
     }
-
 }
